@@ -36,8 +36,8 @@
     "@codemirror/language": "^6.0.1"
   },
   "devDependencies": {
-    "rimraf": "~4.0.0",
-    "typescript": "~4.8.4"
+    "rimraf": "~5.0.0",
+    "typescript": "~5.0.4"
   },
   "sideEffects": [
     "style/*.css"
