@@ -17,8 +17,9 @@
     "rootDir": "src",
     "strict": true,
     "strictNullChecks": false,
-    "target": "es2017",
-    "types": []
+    "target": "es2020",  // Updated to a higher version for better compatibility
+    "types": [],
+    "lib": ["es2018", "dom"]  // Added to include necessary libraries
   },
   "include": ["src/*"]
 }
