@@ -7,12 +7,12 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "https://github.com/wuxi-nextcode/jupyterlab-notebookparams",
+  "homepage": "https://github.com/ucsd-ets/jupyterlab-notebookparams",
   "bugs": {
-    "url": "https://github.com/wuxi-nextcode/jupyterlab-notebookparams/issues"
+    "url": "https://github.com/ucsd-ets/jupyterlab-notebookparams/issues"
   },
   "license": "MIT",
-  "author": "Ólafur Haukur Flygenring <olafurh@genuitysci.com>",
+  "author": "Ólafur Haukur Flygenring <olafurh@genuitysci.com> / UCSD-ETS",
   "files": [
     "lib/**/*.{d.ts,eot,gif,html,jpg,js,js.map,json,png,svg,woff2,ttf}",
     "style/**/*.{css,eot,gif,html,jpg,json,png,svg,woff2,ttf}"
@@ -22,7 +22,7 @@
   "style": "style/index.css",
   "repository": {
     "type": "git",
-    "url": "https://github.com/wuxi-nextcode/jupyterlab-notebookparams.git"
+    "url": "https://github.com/ucsd-ets/jupyterlab-notebookparams.git"
   },
   "scripts": {
     "build": "tsc",
