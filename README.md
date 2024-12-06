@@ -16,7 +16,7 @@ jupyter labextension install @dafeliton/jupyterlab-notebookparams
 ```
 
 # Usage
-Create a notebook cell that starts with the exact string # Parameters: Add parameters to the URL of a notebook, e.g. ```http://example.org/notebook.ipynb?a=1&b=False```. The content of the first cell starting with ```# Parameters:``` will be replaced with the passed parameters, e.g.
+Create a notebook cell that starts with the exact string ```# Parameters:``` Add parameters to the URL of a notebook, e.g. ```http://example.org/notebook.ipynb?a=1&b=False```. The content of the first cell starting with ```# Parameters:``` will be replaced with the passed parameters, e.g.
 
 ```
 # Parameters:
