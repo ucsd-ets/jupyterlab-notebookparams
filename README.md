@@ -12,7 +12,7 @@ Functionality lifted from https://github.com/manics/jupyter-notebookparams and m
 ## Installation
 
 ```bash
-jupyter labextension install @wuxinextcode/jupyterlab-notebookparams
+jupyter labextension install @dafeliton/jupyterlab-notebookparams
 ```
 
 ## Development
