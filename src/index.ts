@@ -18,63 +18,92 @@ const PARAM_CELL_PARAMETERS = "# Parameters:";
 const FILTERED_PARAMS = ["reset", "clone"];
 let autorun = false;
 
-function generateParamAssignment(params: URLSearchParams, language: String): String {
+/**
+ * Generates parameter assignments from URL search parameters and the full URL.
+ * @param params URLSearchParams object containing the URL parameters.
+ * @param href The full URL of the notebook.
+ * @param language The kernel language of the notebook (e.g., python, r).
+ * @returns A string with parameter assignments.
+ */
+function generateParamAssignment(params: URLSearchParams, href: string, language: string): string {
   let text = "";
-  for(const [key, value] of params) {
+  
+  // Process existing URL parameters
+  for (const [key, value] of params) {
     if (FILTERED_PARAMS.includes(key)) {
       continue;
     }
 
-    if (key == 'autorun') {
-      autorun = (value == 'true');
+    if (key === 'autorun') {
+      autorun = (value === 'true');
     } else {
-
       let v = value;
 
-      //Enclose value in quotes if we can't convert to a number
-      if(isNaN(Number(value))) {
-        v = '"' + value + '"';
+      // Enclose value in quotes if it's not a number
+      if (isNaN(Number(value))) {
+        v = `"${value}"`;
       }
-      switch(language) {
-        case 'R': {
-          text += key + ' <- ' + v + '\n';
+
+      // Assign based on the kernel language
+      switch (language.toLowerCase()) {
+        case 'r':
+          text += `${key} <- ${v}\n`;
           break;
-        }
-        default: {
-          text += key + ' = ' + v + '\n';
+        default: // Default to Python-style assignment
+          text += `${key} = ${v}\n`;
           break;
-        }
       }
     }
   }
+
+  // Add the full URL as a parameter
+  const fullUrl = href;
+  switch (language.toLowerCase()) {
+    case 'r':
+      text += `full_url <- "${fullUrl}"\n`;
+      break;
+    default: // Default to Python-style assignment
+      text += `full_url = "${fullUrl}"\n`;
+      break;
+  }
+
   return text;
 }
 
-function activateExtension(app: JupyterFrontEnd, notebooks: INotebookTracker) : void {
+/**
+ * Activates the extension by setting parameters in the parameter cell.
+ * @param app The JupyterFrontEnd application instance.
+ * @param notebooks The notebook tracker.
+ */
+function activateExtension(app: JupyterFrontEnd, notebooks: INotebookTracker): void {
   console.log('JupyterLab extension jupyterlab-notebookparams is activated!');
   const href = window.location.href;
 
   notebooks.widgetAdded.connect((sender, panel: NotebookPanel) => {
-
     panel.sessionContext.ready.then(() => {
-      for(let i = 0; i < panel.model.cells.length; i++) {
-        let cell = panel.model.cells.get(i);
+      for (let i = 0; i < panel.model.cells.length; i++) {
+        const cell = panel.model.cells.get(i);
         if (cell.sharedModel.getSource().startsWith(PARAM_CELL_PARAMETERS)) {
-          let searchParams = new URL(href).searchParams;
-          let text = generateParamAssignment(searchParams,panel.model.defaultKernelLanguage);
+          const searchParams = new URL(href).searchParams;
+          const language = panel.model.defaultKernelLanguage || 'python'; // Default to Python if undefined
+          const text = generateParamAssignment(searchParams, href, language);
+          
           if (text) {
-            cell.sharedModel.setSource(PARAM_CELL_PARAMETERS + '\n' + text);
-            console.log('jupyterlab-notebookparams: setting parameters in cell ' + cell);
+            cell.sharedModel.setSource(`${PARAM_CELL_PARAMETERS}\n${text}`);
+            console.log(`jupyterlab-notebookparams: Setting parameters in cell ${i}`);
           }
-          if(autorun) {
-            NotebookActions.runAll(panel.content,panel.sessionContext).then(() => console.log("jupyterlab-notebookparams: Autorun done."));
+
+          if (autorun) {
+            NotebookActions.runAll(panel.content, panel.sessionContext).then(() => {
+              console.log("jupyterlab-notebookparams: Autorun done.");
+            });
           }
-          break;
+          break; // Exit after processing the parameter cell
         }
       }
     });
   });
 }
 
-// noinspection JSUnusedGlobalSymbols
+// Export the extension as default
 export default extension;
