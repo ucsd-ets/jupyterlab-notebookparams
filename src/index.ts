@@ -59,11 +59,11 @@ function activateExtension(app: JupyterFrontEnd, notebooks: INotebookTracker) : 
     panel.sessionContext.ready.then(() => {
       for(let i = 0; i < panel.model.cells.length; i++) {
         let cell = panel.model.cells.get(i);
-        if(cell.value.text.startsWith(PARAM_CELL_PARAMETERS)) {
+        if (cell.sharedModel.getSource().startsWith(PARAM_CELL_PARAMETERS)) {
           let searchParams = new URL(href).searchParams;
           let text = generateParamAssignment(searchParams,panel.model.defaultKernelLanguage);
           if (text) {
-            cell.value.text = PARAM_CELL_PARAMETERS + '\n' + text;
+            cell.sharedModel.setSource(PARAM_CELL_PARAMETERS + '\n' + text);
             console.log('jupyterlab-notebookparams: setting parameters in cell ' + cell);
           }
           if(autorun) {
