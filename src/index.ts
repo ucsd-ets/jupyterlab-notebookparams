@@ -94,8 +94,11 @@ function activateExtension(app: JupyterFrontEnd, notebooks: INotebookTracker): v
           }
 
           if (autorun) {
-            NotebookActions.runAll(panel.content, panel.sessionContext).then(() => {
-              console.log("jupyterlab-notebookparams: Autorun done.");
+            // Set the active cell to the parameters cell
+            panel.content.activeCellIndex = i;
+            // Run only that cell
+            NotebookActions.run(panel.content, panel.sessionContext).then(() => {
+              console.log("jupyterlab-notebookparams: Autorun (parameters cell only) done.");
             });
           }
           break; // Exit after processing the parameter cell
