@@ -40,6 +40,17 @@ jupyter labextension link .
 To rebuild the package and the JupyterLab app:
 
 ```bash
+npm install
 npm run build
 jupyter lab build
 ```
+
+To publish a new version of the package (after changing the version):
+
+```bash
+npm install
+npm run build
+npm publish --access public
+```
+
+If you change the user that this package is published under, please make sure you update the appropriate images/this README.
